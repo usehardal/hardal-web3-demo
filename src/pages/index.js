@@ -1,11 +1,20 @@
 import Head from "next/head";
 import styles from "@/styles/Home.module.css";
+import React, { useState } from "react";
 import Moralis from "moralis";
 import { useEvmNativeBalance } from "@moralisweb3/next";
 import { EvmChain } from "@moralisweb3/evm-utils";
 
 export default function Home() {
-  const address = "";
+  const [address, setAddress] = useState("");
+
+  function handleInputChange(event) {
+    setAddress(event.target.value);
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
+    // Do something with the input data, e.g. send it to a server
+  }
   const { data: nativeBalance } = useEvmNativeBalance({ address });
 
   console.log(nativeBalance);
@@ -18,7 +27,19 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Wallet ID:
+            <input
+              type="text"
+              placeholder="paste your wallet ID"
+              value={address}
+              onChange={handleInputChange}
+            />
+          </label>
+          <button type="submit">Submit</button>
+        </form>
         {address && (
           <>
             <h3>Wallet: {address}</h3>
